@@ -13,8 +13,8 @@ what_type:
 	say Question("What are you looking for ?",
 	buttons=[
     // Note that the `as` keyword  is used to place a assign a button to a variable to we can use it later
-		Button("A movie 🎬") as btnmovie,
-		Button("A serie 👮‍♂️") as btnserie,
+		Button("Movie 🎬") as btnmovie,
+		Button("Series 👮‍♂️") as btnserie,
 		Button("Anything 😍") as btnany
 		])
   // The `hold` keyword tells the chatbot to wait for the user input

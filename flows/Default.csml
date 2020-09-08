@@ -5,8 +5,8 @@ start:
 what_type:
 	say Question("What are you looking for ?",
 	buttons=[
-		Button("A movie 🎬") as btnmovie,
-		Button("A serie 👮‍♂️") as btnserie,
+		Button("Movie 🎬") as btnmovie,
+		Button("Series 👮‍♂️") as btnserie,
 		Button("Anything 😍") as btnany
 		])
 	hold
@@ -24,7 +24,7 @@ what_type:
 
 
 // Before starting, you need to remove the line 27 below
-/*
+
   goto what_genre
 
 
@@ -32,7 +32,7 @@ what_type:
 
 what_genre:
   // 1 - Write the question that the chatbot will ask prior showing all genres
-  say Question("????",
+  say Question("What genre of movies or shows do you like ?",
 	buttons=[
     Button("Action & Adventure"),
     Button("Animation"),
@@ -45,10 +45,10 @@ what_genre:
     Button("Thrillers")
 		])
     // 2 - Now the chatbot needs to wait for the user input, what's the keyword?
-    ????
+    hold
     // 3 - Once the user has answered, the chatbot needs ro remember what the user has said
     //     by creating a new variable `genre`, a keyword is missing
-    ???? genre = event
+    remember genre = event
     goto what_year
   
 what_year:
@@ -56,43 +56,48 @@ what_year:
 	buttons=[
     // 4 - We need to show a button "No"
     // 5 - This button needs to be assigned to the variable `btnNo`
-		????("Non 🙅‍♀️") as ????
+		Button("No 🙅‍♀️") as btnNo
 		])
   hold
   if (event match btnNo) {
     remember year = "any"
   } else {
-    remember year = event
+    if (event.is_int() && event >= 1950 && event <= 2020) {
+      remember year = event
+    } else {
+      say "This is not a valid date, you need to write a date as a 4 digits number, between 1950 and 2020."
+      goto what_year
+    }
   }
   // 6 - The chatbot now needs to go to the `is_sorted` step, write the instruction below
-  ???? ????
+  goto is_sorted
 
 
 is_sorted:
-  // 7 - Ask the user if he want the results sorted by date
+  // 7 - Ask the user if he wants the results sorted by date
   //     The question will show two buttons :
   //     - "Yes" that will be assigned to btnYes
   //     - "No" that will be assigned to btnNo
-  say ????("Would you like the resulted sorted by date (new movies first 😉)",
-	????=[
-		???? ???? ???? ????,
-    ???? ???? ???? ????
+  say Question("Would you like the resulted sorted by date (new movies first 😉)",
+	buttons=[
+		Button("Yes ✅") as btnYes,
+    Button("No 🥴") as btnNo
 		])
   // 8 - Again, the chatbot needs to wait for the user input
-  ????
+  hold
   // 9 - if the user has clicked "Yes", create a variable `sort` set to `true`
   //     otherwise, `sort` will be set to `false`
-  ???? (event ???? btnYes) {
-    remember ???? = true
-  } ???? {
-    remember ???? = false
+  if (event match btnYes) {
+    remember sort = true
+  } else {
+    remember sort = false
   }
   // 10 - Final step, we need to go to the `display` step
-  ???? ????
+  goto display
 
 display:
   // 11 - Now, we call the function, attaching all the known variables, fill in the blanks below
-  do res = Fn("Netflix", genre=????, type=????, sort=????, year=????)
+  do res = Fn("Netflix", genre=genre, type=type, sort=sort, year=year)
   do cards = []
   if (res.length() == 0) {
     say "No movies are matching your requirements, sorry 😔"
