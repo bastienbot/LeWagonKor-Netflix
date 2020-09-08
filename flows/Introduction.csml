@@ -1,7 +1,7 @@
 // This is a comment, they're green and start with //
 // The CSML ignores comments, they are only for us to use, they're very useful 😎
 
-// A chatbot conversation always start with the `start` keyword followed by a sme column
+// A chatbot conversation always starts with the `start` keyword followed by a sme column
 start:
 	say "Hello, I'm your Netflix assistant !"
   // Once the chatbot has said Hello,
