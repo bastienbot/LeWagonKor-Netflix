@@ -1,0 +1,33 @@
+// This is a comment, they're green and start with //
+// The CSML ignores comments, they are only for us to use, they're very useful 😎
+
+// A chatbot conversation always start with the `start` keyword followed by a sme column
+start:
+	say "Hello, I'm your Netflix assistant !"
+  // Once the chatbot has said Hello,
+  // the `goto` keyword indicates the chatbot to go to the `what_type` step
+	goto what_type
+
+what_type:
+  // We ask a question and add three buttons below
+	say Question("What are you looking for ?",
+	buttons=[
+    // Note that the `as` keyword  is used to place a assign a button to a variable to we can use it later
+		Button("A movie 🎬") as btnmovie,
+		Button("A serie 👮‍♂️") as btnserie,
+		Button("Anything 😍") as btnany
+		])
+  // The `hold` keyword tells the chatbot to wait for the user input
+	hold
+  // Once the user replies, the answer will be placed in a variable called `event` that will be created automatically
+	if (event match btnmovie) {
+    // If the user input  matches the movie button `btnmovie`, we remember the `type` being "movie"
+		remember type = "movie"
+	}
+	else if (event match btnserie) {
+		remember type = "serie"
+	} else {
+    remember type = "any"
+  }
+  say "Ok! I will remember that you prefer: {{type}}"
+  goto end

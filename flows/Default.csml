@@ -1,0 +1,122 @@
+start:
+	say "Hello, I'm your Netflix assistant !"
+	goto what_type
+
+what_type:
+	say Question("What are you looking for ?",
+	buttons=[
+		Button("A movie 🎬") as btnmovie,
+		Button("A serie 👮‍♂️") as btnserie,
+		Button("Anything 😍") as btnany
+		])
+	hold
+	if (event match btnmovie) {
+		remember type = "movie"
+	}
+	else if (event match btnserie) {
+		remember type = "serie"
+	} else {
+    remember type = "any"
+  }
+// ############################################################
+// Now it's your turn, fill in the missing part below
+// ############################################################
+
+
+// Before starting, you need to remove the line 30 below
+/*
+  goto what_genre
+
+
+
+
+what_genre:
+  // 1 - Write the question that the chatbot will ask prior showing all genres
+  say Question("????",
+	buttons=[
+    Button("Action & Adventure"),
+    Button("Animation"),
+    Button("Documentary Films"),
+    Button("Dramas"),
+    Button("Family Comedies"),
+    Button("Horror Movies"),
+    Button("Music & Musicals"),
+    Button("Sci-Fi & Fantasy"),
+    Button("Thrillers")
+		])
+    // 2 - Now the chatbot needs to wait for the user input, what's the keyword?
+    ????
+    // 3 - Once the user has answered, the chatbot needs ro remember what the user has said
+    //     by creating a new variable `genre`, a keyword is missing
+    ???? genre = event
+    goto what_year
+  
+what_year:
+  say Question("Are you looking for a specific year of release ?",
+	buttons=[
+    // 4 - We need to show a button "No"
+    // 5 - This button needs to be assigned to the variable `btnNo`
+		????("Non 🙅‍♀️") as ????
+		])
+  hold
+  if (event match btnNo) {
+    remember year = "any"
+  } else {
+    remember year = event
+  }
+  // 6 - The chatbot now needs to go to the `is_sorted` step, write the instruction below
+  ???? ????
+
+
+is_sorted:
+  // 7 - Ask the user if he want the results sorted by date
+  //     The question will show two buttons :
+  //     - "Yes" that will be assigned to btnYes
+  //     - "No" that will be assigned to btnNo
+  say ????("Would you like the resulted sorted by date (new movies first 😉)",
+	????=[
+		???? ???? ???? ????,
+    ???? ???? ???? ????
+		])
+  // 8 - Again, the chatbot needs to wait for the user input
+  ????
+  // 9 - if the user has clicked "Yes", create a variable `sort` set to `true`
+  //     otherwise, `sort` will be set to `false`
+  ???? (event ???? btnYes) {
+    remember ???? = true
+  } ???? {
+    remember ???? = false
+  }
+  // 10 - Final step, we need to go to the `display` step
+  ???? ????
+
+display:
+  // 11 - Now, we call the function, attaching all the known variables, fill in the blanks below
+  do res = Fn("Netflix", genre=????, type=????, sort=????, year=????)
+  do cards = []
+  if (res.length() == 0) {
+    say "No movies are matching your requirements, sorry 😔"
+  }
+  foreach (val, index) in res {
+    if (val.avgrating) do title = "{{val.avgrating}}/10 - {{val.title}}"
+    else do title = val.title
+    do newCard = Card(
+      title=title,
+      subtitle=val.synopsis,
+      image_url=val.img,
+      buttons=[Button("Find out more", payload=val.title)]
+    )
+    if (index < 6) do cards.push(newCard)
+  }
+  say Carousel(
+    cards = cards
+  )
+  goto moreInfos
+
+moreInfos:
+  hold
+  if (event == "Check other movies") goto start
+  do url = Fn("urlEncode", url="https://www.netflix.com/search?q={{event}}")
+  say Url(url, text="{{url}} on Netflix")
+  say Button("Check other movies")
+  goto moreInfos

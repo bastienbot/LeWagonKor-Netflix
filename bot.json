@@ -1,0 +1,42 @@
+{
+  "id": "9af578bb-e640-494c-a8d2-4439c99beaf8",
+  "name": "LeWagonNetflix",
+  "description": null,
+  "default_flow": "Default",
+  "flows": [
+    {
+      "name": "Default",
+      "description": "",
+      "commands": []
+    },
+    {
+      "name": "Introduction",
+      "commands": []
+    }
+  ],
+  "files": [],
+  "functions": [
+    {
+      "name": "Netflix",
+      "description": null,
+      "args": [],
+      "import_url": null,
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {},
+      "app_id": null,
+      "version": null
+    },
+    {
+      "name": "urlEncode",
+      "description": null,
+      "args": [],
+      "runtime": "nodejs12.x",
+      "handler": "index.handler",
+      "environment": {},
+      "app_id": null,
+      "version": null
+    }
+  ],
+  "apps": []
+}
